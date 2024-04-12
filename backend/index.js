@@ -21,12 +21,38 @@ db.once('open', () => {
 const Event = mongoose.model('Event', {
   name: String,
   slotsAvailable: Number,
+  price:Number
 });
 
 const User = mongoose.model('User', {
+    name_:String,
     username: String,
     password: String,
   });
+
+const Bookings = mongoose.model('Bookings', {
+  eventId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event',
+    required: true,
+  },
+  eventName: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  mobileNumber: {
+    type: String,
+    required: true,
+  },
+  price:{
+    type: Number,
+    required: true,
+  }
+});
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,13 +65,13 @@ app.get('/',async (req,res)=>{
     return res.status(200).send('app running fine');
 })
 app.post('/signup', async (req, res) => {
-    const { username, password } = req.body;
+    const {name_, username, password } = req.body;
     try {
       const existingUser = await User.findOne({ username });
       if (existingUser) {
         return res.status(400).send('User already exists');
       }
-      const newUser = new User({ username, password });
+      const newUser = new User({name_, username, password });
       await newUser.save();
       res.send('Signup successful');
     } catch (err) {
@@ -54,13 +80,19 @@ app.post('/signup', async (req, res) => {
   });
   
   app.post('/login', async (req, res) => {
+    
     const { username, password } = req.body;
+    
     try {
-      const user = await User.findOne({ username, password });
+      const user = await User.find({ username });
+
       if (!user) {
-        return res.status(401).send('Invalid credentials');
+        return res.status(200).send('Invalid credentials');
       }
-      res.send('Login successful');
+      if(user.password != password) {
+        return res.status(200).send(`Invalid password: ${user.password}`);
+      }
+      return res.status(200).send('Login successful');
     } catch (err) {
       res.status(500).send('Error logging in');
     }
@@ -68,9 +100,9 @@ app.post('/signup', async (req, res) => {
 
 // Event routes
 app.post('/events/add', async (req, res) => {
-    const { name, slotsAvailable } = req.body;
+    const { name, slotsAvailable,price } = req.body;
     try {
-      const newEvent = new Event({ name, slotsAvailable });
+      const newEvent = new Event({ name, slotsAvailable,price });
       await newEvent.save();
       res.send('Event added successfully');
     } catch (err) {
@@ -99,22 +131,46 @@ app.get('/events', async (req, res) => {
 
 app.post('/events/book', async (req, res) => {
   try {
-    const { eventId, name, mobileNumber } = req.body;
+    const { eventId, name, mobileNumber,price } = req.body;
     const event = await Event.findById(eventId);
+    
     if (!event) {
       return res.status(404).send('Event not found');
     }
+    
     if (event.slotsAvailable <= 0) {
       return res.status(400).send('No slots available');
     }
+    
     // Update slots and save booking details
     event.slotsAvailable -= 1;
     await event.save();
+    
+    // Save booking details to the Bookings collection
+    await Bookings.create({
+      eventId: eventId,
+      eventName: event.name, // Assuming event name is stored in the event object
+      name: name,
+      price:price,
+      mobileNumber: mobileNumber,
+    });
+    
     res.send('Booking successful');
   } catch (err) {
+    console.error(err);
     res.status(500).send('Error booking event');
   }
 });
+
+app.get('/getallbookings',async (req, res)=>{
+  try{
+    const bookings = await Bookings.find();
+    res.status(200).json(bookings);
+  }catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching booking event');
+  }
+})
 
 // Start server
 app.listen(port, () => {
