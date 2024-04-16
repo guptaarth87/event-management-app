@@ -21,7 +21,10 @@ db.once('open', () => {
 const Event = mongoose.model('Event', {
   name: String,
   slotsAvailable: Number,
-  price:Number
+  price:Number,
+  mealType: String,
+  photographyPlan: String
+
 });
 
 const User = mongoose.model('User', {
@@ -100,9 +103,9 @@ app.post('/signup', async (req, res) => {
 
 // Event routes
 app.post('/events/add', async (req, res) => {
-    const { name, slotsAvailable,price } = req.body;
+    const { name, slotsAvailable,price,mealType,photographyPlan  } = req.body;
     try {
-      const newEvent = new Event({ name, slotsAvailable,price });
+      const newEvent = new Event({ name, slotsAvailable,price, mealType,photographyPlan});
       await newEvent.save();
       res.send('Event added successfully');
     } catch (err) {

@@ -68,7 +68,7 @@ export default function BookEventForm() {
           />
         </div>
         <div className="text-center">
-          <button type="submit" className="btn btn-primary">Book</button>
+          <button type="submit" className="btn btn-primary">Book Tickets</button>
         </div>
       </form>
     </div>

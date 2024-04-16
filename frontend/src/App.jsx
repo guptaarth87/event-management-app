@@ -8,6 +8,7 @@ import Signup from './pages/SignUp'
 import AllEvents from './pages/AllEvents'
 import BookEventForm from './pages/BookEventForm'
 import AddEventForm from './pages/AddEventForm'
+import Footer from './components/Footer'
 
 function App() {
  
@@ -21,6 +22,7 @@ function App() {
       <Route path='/events' element={<AllEvents/>} />
       <Route path='/bookform' element={<BookEventForm/>} />
      </Routes>
+     <Footer/>
     </>
   )
 }

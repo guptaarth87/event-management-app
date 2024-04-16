@@ -5,6 +5,8 @@ export default function AddEventForm() {
   const [name, setName] = useState('');
   const [slotsAvailable, setSlotsAvailable] = useState('');
   const [price, setPrice] = useState('');
+  const [mealType, setMealType] = useState('None');
+  const [photographyPlan, setPhotographyPlan] = useState('Silver');
   const [events, setEvents] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -15,6 +17,8 @@ export default function AddEventForm() {
         name,
         slotsAvailable: parseInt(slotsAvailable),
         price: parseInt(price),
+        mealType,
+        photographyPlan,
       });
       setSuccessMessage(response.data);
       fetchEvents(); // Fetch events again to update the list
@@ -73,6 +77,32 @@ export default function AddEventForm() {
           onChange={(e) => setPrice(e.target.value)}
         />
       </div>
+      <div className="mb-3">
+        <label htmlFor="mealType" className="form-label">Meal Type</label>
+        <select
+          className="form-select"
+          id="mealType"
+          value={mealType}
+          onChange={(e) => setMealType(e.target.value)}
+        >
+          <option value="None">None</option>
+          <option value="Main course+drink">Main course+drink</option>
+          <option value="Main course+starter+drink">Main course+starter+drink</option>
+        </select>
+      </div>
+      <div className="mb-3">
+        <label htmlFor="photographyPlan" className="form-label">Photography Plan</label>
+        <select
+          className="form-select"
+          id="photographyPlan"
+          value={photographyPlan}
+          onChange={(e) => setPhotographyPlan(e.target.value)}
+        >
+          <option value="Silver">Silver</option>
+          <option value="Gold">Gold</option>
+          <option value="Platinum">Platinum</option>
+        </select>
+      </div>
       <div className="text-center">
         <button type="button" className="btn btn-primary" onClick={handleAddEvent}>Add Event</button>
       </div>
@@ -86,6 +116,8 @@ export default function AddEventForm() {
                 <h5 className="card-title">{event.name}</h5>
                 <p className="card-text">Slots Available: {event.slotsAvailable}</p>
                 <p className="card-text">Price: {event.price}</p>
+                <p className="card-text">Meal Type: {event.mealType}</p>
+                <p className="card-text">Photography Plan: {event.photographyPlan}</p>
               </div>
             </div>
           </div>
