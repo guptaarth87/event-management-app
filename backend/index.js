@@ -102,6 +102,22 @@ app.post('/signup', async (req, res) => {
   });
 
 // Event routes
+
+app.delete('/deleteevent/:id', async (req, res) => {
+  const eventId = req.params.id;
+  try {
+    const deletedEvent = await Event.findByIdAndDelete(eventId);
+    if (!deletedEvent) {
+      return res.status(404).send('Event not found');
+    }
+    res.send('Event deleted successfully');
+  } catch (err) {
+    console.error(err); // Log the error for debugging purposes
+    res.status(500).send('Error deleting event');
+  }
+});
+
+
 app.post('/events/add', async (req, res) => {
     const { name, slotsAvailable,price,mealType,photographyPlan  } = req.body;
     try {

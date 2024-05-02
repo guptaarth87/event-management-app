@@ -42,6 +42,18 @@ export default function AddEventForm() {
     fetchEvents();
   }, []);
 
+  const handleDelete=async (id)=>{
+          
+          try {
+            const response = await axios.delete(`http://localhost:3000/deleteevent/${id}`);
+            setEvents(response);
+            alert("deleted event")
+            window.location.reload();
+          } catch (err) {
+            console.error(err);
+            setErrorMessage('Error deleting events');
+          }
+  }
   return (
     <div className="container mt-4">
       <h2 className="text-center mb-4">Add Event</h2>
@@ -108,9 +120,9 @@ export default function AddEventForm() {
       </div>
       <hr />
       <h2 className="text-center mb-4">All Events</h2>
-      <div className="row row-cols-1 row-cols-md-2 g-4">
+      <div className="row row-cols-1 row-cols-md-2 g-4 p-2">
         {events.map((event) => (
-          <div className="col" key={event._id}>
+          <div className="col p-2" key={event._id}>
             <div className="card h-100">
               <div className="card-body">
                 <h5 className="card-title">{event.name}</h5>
@@ -118,8 +130,12 @@ export default function AddEventForm() {
                 <p className="card-text">Price: {event.price}</p>
                 <p className="card-text">Meal Type: {event.mealType}</p>
                 <p className="card-text">Photography Plan: {event.photographyPlan}</p>
+                <button className='btn btn-danger mt-2 col-5' onClick={()=>{handleDelete(event._id)}}>Delete event</button>
+           
               </div>
-            </div>
+            
+              </div>
+             
           </div>
         ))}
       </div>

@@ -9,6 +9,7 @@ import AllEvents from './pages/AllEvents'
 import BookEventForm from './pages/BookEventForm'
 import AddEventForm from './pages/AddEventForm'
 import Footer from './components/Footer'
+import AdminLogin from './pages/AdminLogin'
 
 function App() {
  
@@ -16,7 +17,8 @@ function App() {
     <>
      <Routes>
       <Route path='/' element={<Login/>} />
-      <Route path='/admin' element={<AddEventForm/>} />
+      <Route path='/admin' element={<AdminLogin/>} />
+      <Route path='/addevent' element={<AddEventForm/>} />
       <Route path='/login' element={<Login/>} />
       <Route path='/signup' element={<Signup/>} />
       <Route path='/events' element={<AllEvents/>} />
