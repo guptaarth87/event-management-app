@@ -1,8 +1,12 @@
 import React from 'react'
 import Heroimg from '../../assets/heroimg.svg';
 import './Hero.css';
+import {useNavigate} from 'react-router-dom';
 
 export default function Hero() {
+
+  const navigate = useNavigate();
+
   return (
     <>
     <div className="container">
@@ -15,7 +19,7 @@ export default function Hero() {
                <h4 className=''>Experience the thrill of live entertainment with EventX - your one-stop destination for booking tickets to shows, concerts, and more! Discover, book, and enjoy unforgettable experiences with ease.</h4>
                <br></br>
                <h4>Explore Events Section.</h4>
-
+               <button className='btn btn-primary text-center' onClick={()=>{navigate('/contact')}}>Contact us</button>
             </div>
             <div className="col-1"></div>
             <div className="col-lg-5 col-md-5 col-sm-11">

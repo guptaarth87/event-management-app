@@ -10,6 +10,7 @@ import BookEventForm from './pages/BookEventForm'
 import AddEventForm from './pages/AddEventForm'
 import Footer from './components/Footer'
 import AdminLogin from './pages/AdminLogin'
+import ContactusPage from './pages/ContactusPage'
 
 function App() {
  
@@ -19,6 +20,7 @@ function App() {
       <Route path='/' element={<Login/>} />
       <Route path='/admin' element={<AdminLogin/>} />
       <Route path='/addevent' element={<AddEventForm/>} />
+      <Route path='/contact' element={<ContactusPage/>}/>
       <Route path='/login' element={<Login/>} />
       <Route path='/signup' element={<Signup/>} />
       <Route path='/events' element={<AllEvents/>} />
